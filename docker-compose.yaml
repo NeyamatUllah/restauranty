@@ -83,8 +83,13 @@ services:
       - "3030:3000"            # host :3030 to avoid conflict with client on :3000
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./infrastructure/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infrastructure/monitoring/grafana-dashboard.json:/var/lib/grafana/dashboards/restauranty.json:ro
+      - grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
 
 volumes:
   mongo-data:
+  grafana-data:
