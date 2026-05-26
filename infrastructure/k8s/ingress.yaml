@@ -2,29 +2,27 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: restauranty-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
     - http:
         paths:
-          - path: /api/auth(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /api/auth
+            pathType: Prefix
             backend:
               service:
                 name: auth
                 port:
                   number: 3001
-          - path: /api/discounts(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /api/discounts
+            pathType: Prefix
             backend:
               service:
                 name: discounts
                 port:
                   number: 3002
-          - path: /api/items(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /api/items
+            pathType: Prefix
             backend:
               service:
                 name: items

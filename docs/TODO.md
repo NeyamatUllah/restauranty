@@ -44,7 +44,7 @@
 - [x] Write `infrastructure/k8s/ingress.yaml` (NGINX, mirrors HAProxy routing)
 - [x] Write `infrastructure/k8s/secrets.yaml.example` (template only — never commit real values)
 - [x] Write `infrastructure/k8s/network-policies.yaml`
-- [ ] Test: `kubectl apply -f infrastructure/k8s/` on Minikube — verify Ingress routes correctly
+- [x] Test: `kubectl apply -f infrastructure/k8s/` on Minikube — verify Ingress routes correctly
 
 ---
 
@@ -105,7 +105,7 @@
 |---|---|---|
 | 0 — Code Fixes | **done** | 3 bugs + 1 doc fix |
 | 1 — Containerization | **done** | All 6 services confirmed Up via docker compose ps |
-| 2 — Kubernetes | **done** | 14 manifests in infrastructure/k8s/ — Minikube test pending |
+| 2 — Kubernetes | **done** | All manifests verified on Minikube — Ingress routes tested end-to-end |
 | 3 — CI/CD | **done** | CI + build/push passing; deploy fails (expected — no K8s cluster yet) |
 | 4 — Monitoring | **done** | Prometheus scraping all 3 services; Grafana dashboard auto-provisioned |
 | 5 — Security | **done** | SECURITY.md written; network policies in place; no .env in git |
