@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: items
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: items
+  template:
+    metadata:
+      labels:
+        app: items
+    spec:
+      containers:
+        - name: items
+          image: ghcr.io/NeyamatUllah/restauranty-items:latest
+          ports:
+            - containerPort: 3003
+          env:
+            - name: PORT
+              value: "3003"
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: restauranty-secrets
+                  key: MONGODB_URI
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: restauranty-secrets
+                  key: SECRET
+            - name: ORIGIN
+              valueFrom:
+                secretKeyRef:
+                  name: restauranty-secrets
+                  key: ORIGIN
+            - name: CLOUD_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: restauranty-secrets
+                  key: CLOUD_NAME
+            - name: CLOUD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: restauranty-secrets
+                  key: CLOUD_API_KEY
+            - name: CLOUD_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: restauranty-secrets
+                  key: CLOUD_API_SECRET

@@ -1,0 +1,68 @@
+services:
+
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"       # exposed to host so you can connect via MongoDB Compass
+    volumes:
+      - mongo-data:/data/db
+
+  auth:
+    build: ./src/backend/auth
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    env_file: ./src/backend/auth/.env
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/resturanty   # override .env — mongo is a service name, not localhost
+    depends_on:
+      - mongo
+
+  discounts:
+    build: ./src/backend/discounts
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    env_file: ./src/backend/discounts/.env
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/resturanty
+    depends_on:
+      - mongo
+
+  items:
+    build: ./src/backend/items
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    env_file: ./src/backend/items/.env
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/resturanty
+    depends_on:
+      - mongo
+
+  client:
+    build: ./src/client
+    restart: unless-stopped
+    ports:
+      - "3000:80"           # NGINX serves on :80 inside the container, mapped to :3000 on the host
+    depends_on:
+      - auth
+      - discounts
+      - items
+
+  haproxy:
+    image: haproxy:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./haproxy-docker.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - auth
+      - discounts
+      - items
+      - client
+
+volumes:
+  mongo-data:
