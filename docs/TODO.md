@@ -69,7 +69,7 @@
 - [x] Write `infrastructure/monitoring/grafana-dashboard.json` (HTTP request rate, error rate, user count panels)
 - [x] Add Prometheus + Grafana to `docker-compose.yaml` for local testing
 - [x] Add Prometheus + Grafana K8s manifests (or Helm values) to `infrastructure/k8s/`
-- [ ] Test: open Grafana at `localhost:3030` — confirm metrics flowing from all 3 services
+- [x] Test: open Grafana at `localhost:3030` — confirm metrics flowing from all 3 services
 
 ---
 
@@ -107,6 +107,6 @@
 | 1 — Containerization | **done** | All 6 services confirmed Up via docker compose ps |
 | 2 — Kubernetes | **done** | 14 manifests in infrastructure/k8s/ — Minikube test pending |
 | 3 — CI/CD | **done** | CI + build/push passing; deploy fails (expected — no K8s cluster yet) |
-| 4 — Monitoring | **in progress** | Prometheus + Grafana written; local test pending |
+| 4 — Monitoring | **done** | Prometheus scraping all 3 services; Grafana dashboard auto-provisioned |
 | 5 — Security | not started | |
 | 6 — Documentation | not started | |
