@@ -55,9 +55,9 @@
   - [x] CI job: lint + build each service on every pull request
   - [x] CD job: build & push Docker images to ghcr.io on merge to main
   - [x] CD job: deploy to Kubernetes (`kubectl apply`) on merge to main
-- [ ] Add required secrets to GitHub repo settings:
+- [x] Add required secrets to GitHub repo settings:
   - [ ] `KUBE_CONFIG`
-  - [ ] `MONGODB_URI`, `SECRET`, `ORIGIN`, `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET`
+  - [x] `MONGODB_URI`, `SECRET`, `ORIGIN`, `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET`
 - [ ] Test: open a PR and verify CI runs and passes
 
 ---
