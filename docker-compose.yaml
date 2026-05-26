@@ -64,5 +64,27 @@ services:
       - items
       - client
 
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/monitoring/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - auth
+      - discounts
+      - items
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - "3030:3000"            # host :3030 to avoid conflict with client on :3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+
 volumes:
   mongo-data:

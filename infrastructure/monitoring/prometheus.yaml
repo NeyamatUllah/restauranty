@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: auth
+    static_configs:
+      - targets: ['auth:3001']
+
+  - job_name: discounts
+    static_configs:
+      - targets: ['discounts:3002']
+
+  - job_name: items
+    static_configs:
+      - targets: ['items:3003']
