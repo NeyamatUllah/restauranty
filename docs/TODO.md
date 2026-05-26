@@ -58,7 +58,7 @@
 - [x] Add required secrets to GitHub repo settings:
   - [ ] `KUBE_CONFIG`
   - [x] `MONGODB_URI`, `SECRET`, `ORIGIN`, `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET`
-- [ ] Test: open a PR and verify CI runs and passes
+- [x] Test: open a PR and verify CI runs and passes
 
 ---
 
@@ -106,7 +106,7 @@
 | 0 — Code Fixes | **done** | 3 bugs + 1 doc fix |
 | 1 — Containerization | **done** | All 6 services confirmed Up via docker compose ps |
 | 2 — Kubernetes | **done** | 14 manifests in infrastructure/k8s/ — Minikube test pending |
-| 3 — CI/CD | **in progress** | Workflow written (ghcr.io); GitHub secrets + PR test pending |
+| 3 — CI/CD | **done** | CI + build/push passing; deploy fails (expected — no K8s cluster yet) |
 | 4 — Monitoring | not started | `/metrics` endpoints already in code |
 | 5 — Security | not started | |
 | 6 — Documentation | not started | |
