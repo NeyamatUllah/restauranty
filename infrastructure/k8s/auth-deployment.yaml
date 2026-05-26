@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: ghcr.io/NeyamatUllah/restauranty-auth:latest
+          image: ghcr.io/neyamatullah/restauranty-auth:latest
           ports:
             - containerPort: 3001
           env:

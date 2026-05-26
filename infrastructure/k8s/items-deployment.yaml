@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: items
-          image: ghcr.io/NeyamatUllah/restauranty-items:latest
+          image: ghcr.io/neyamatullah/restauranty-items:latest
           ports:
             - containerPort: 3003
           env:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: discounts
-          image: ghcr.io/NeyamatUllah/restauranty-discounts:latest
+          image: ghcr.io/neyamatullah/restauranty-discounts:latest
           ports:
             - containerPort: 3002
           env:
