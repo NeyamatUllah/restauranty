@@ -75,14 +75,14 @@
 
 ## Phase 5 — Security & Compliance
 
-- [ ] Write `SECURITY.md` at project root covering:
-  - [ ] Secret management approach (`.env` locally, K8s Secrets in production)
-  - [ ] JWT signing and token expiry policy
-  - [ ] CORS policy (lock down `origin: '*'` for production)
-  - [ ] User data handling (bcrypt, no PII in logs)
-  - [ ] IAM / RBAC notes for Kubernetes
-- [ ] Review and tighten `network-policies.yaml` (confirm services cannot reach each other except via Ingress)
-- [ ] Confirm no `.env` files are tracked in git
+- [x] Write `SECURITY.md` at project root covering:
+  - [x] Secret management approach (`.env` locally, K8s Secrets in production)
+  - [x] JWT signing and token expiry policy
+  - [x] CORS policy (lock down `origin: '*'` for production)
+  - [x] User data handling (bcrypt, no PII in logs)
+  - [x] IAM / RBAC notes for Kubernetes
+- [x] Review and tighten `network-policies.yaml` (confirm services cannot reach each other except via Ingress)
+- [x] Confirm no `.env` files are tracked in git
 
 ---
 
@@ -108,5 +108,5 @@
 | 2 — Kubernetes | **done** | 14 manifests in infrastructure/k8s/ — Minikube test pending |
 | 3 — CI/CD | **done** | CI + build/push passing; deploy fails (expected — no K8s cluster yet) |
 | 4 — Monitoring | **done** | Prometheus scraping all 3 services; Grafana dashboard auto-provisioned |
-| 5 — Security | not started | |
+| 5 — Security | **done** | SECURITY.md written; network policies in place; no .env in git |
 | 6 — Documentation | not started | |
