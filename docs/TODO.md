@@ -88,14 +88,14 @@
 
 ## Phase 6 — Documentation
 
-- [ ] Write `README.md` at project root covering:
-  - [ ] Project overview
-  - [ ] Prerequisites (Node.js, Docker, kubectl, HAProxy)
-  - [ ] Local dev runbook (MongoDB + 4 terminals + HAProxy)
-  - [ ] Docker Compose runbook
-  - [ ] Kubernetes deploy runbook
-  - [ ] How to view metrics (Prometheus / Grafana)
-  - [ ] Environment variable reference
+- [x] Write `README.md` at project root covering:
+  - [x] Project overview
+  - [x] Prerequisites (Node.js, Docker, kubectl, HAProxy)
+  - [x] Local dev runbook (MongoDB + 4 terminals + HAProxy)
+  - [x] Docker Compose runbook
+  - [x] Kubernetes deploy runbook
+  - [x] How to view metrics (Prometheus / Grafana)
+  - [x] Environment variable reference
 
 ---
 
@@ -109,4 +109,4 @@
 | 3 — CI/CD | **done** | CI + build/push passing; deploy fails (expected — no K8s cluster yet) |
 | 4 — Monitoring | **done** | Prometheus scraping all 3 services; Grafana dashboard auto-provisioned |
 | 5 — Security | **done** | SECURITY.md written; network policies in place; no .env in git |
-| 6 — Documentation | not started | |
+| 6 — Documentation | **done** | README.md written covering all phases |
