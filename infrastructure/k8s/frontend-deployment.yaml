@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: client
-          image: ghcr.io/NeyamatUllah/restauranty-client:latest
+          image: ghcr.io/neyamatullah/restauranty-client:latest
           ports:
             - containerPort: 80

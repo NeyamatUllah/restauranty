@@ -57,12 +57,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set lowercase image owner
+        run: echo "IMAGE_OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.context }}
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/restauranty-${{ matrix.service }}:latest
+          tags: ghcr.io/${{ env.IMAGE_OWNER }}/restauranty-${{ matrix.service }}:latest
 
   # ── CD: deploy to Kubernetes — only on merge to main ─────────────────────
   deploy:
