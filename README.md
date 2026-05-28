@@ -200,6 +200,54 @@ Metrics available: HTTP request rate, error rate, total users, requests by route
 
 ---
 
+## Project Structure
+
+```
+restauranty/
+├── README.md
+├── SECURITY.md
+├── docker-compose.yaml
+├── haproxy.cfg                          # local dev routing
+├── haproxy-docker.cfg                   # Docker Compose routing
+│
+├── src/                                 # application source
+│   ├── backend/
+│   │   ├── auth/                        # JWT auth service (port 3001)
+│   │   ├── discounts/                   # coupons & campaigns (port 3002)
+│   │   └── items/                       # menu & dietary (port 3003)
+│   └── client/                          # React SPA (port 3000)
+│       └── src/
+│           ├── components/              # Navbar, route guards, UI widgets
+│           ├── context/                 # auth context
+│           ├── pages/                   # Admin, Login, Signup, Home…
+│           └── services/               # Axios API calls
+│
+├── infrastructure/
+│   ├── k8s/                             # 20 Kubernetes manifests
+│   │   ├── ingress.yaml                 # restauranty.40.114.182.90.nip.io
+│   │   ├── monitoring-ingress.yaml      # Prometheus + Grafana public URLs
+│   │   ├── grafana-configmaps.yaml      # datasource + dashboard provisioning
+│   │   ├── network-policies.yaml
+│   │   ├── secrets.yaml.example
+│   │   └── {auth,discounts,items,frontend,mongo,grafana,prometheus}-*.yaml
+│   └── monitoring/
+│       ├── prometheus.yaml
+│       ├── grafana-dashboard.json
+│       └── grafana/provisioning/
+│           ├── datasources/prometheus.yaml
+│           └── dashboards/dashboard.yaml
+│
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yaml                   # CI → build/push → deploy to AKS
+│
+└── docs/
+    ├── SECRETS.md
+    └── TODO.md
+```
+
+---
+
 ## Environment Variables
 
 | Variable | Description |
