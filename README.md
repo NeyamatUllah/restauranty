@@ -178,6 +178,23 @@ kubectl get ingress -n restauranty
 
 > The ingress uses host-based routing (`restauranty.40.114.182.90.nip.io`) so it coexists with other apps on the shared NGINX Ingress controller without path conflicts.
 
+#### Azure LB health probe
+
+By default AKS configures the Load Balancer health probe as HTTP `GET /` on the ingress node port. If there is no wildcard-host ingress serving `/`, nginx returns 404 and Azure marks the backend unhealthy — blocking all external traffic.
+
+Fix: switch the probe to TCP (checks the port is open, which is all an ingress controller needs):
+
+```bash
+az network lb probe update \
+  --resource-group MC_rg-3tier-aks-neyamat_aks-3tier-neyamat_westeurope \
+  --lb-name kubernetes \
+  --name ab501583bb93c4ed4b7e54745dac07ff-TCP-80 \
+  --protocol Tcp \
+  --path ""
+```
+
+> Re-apply this after any AKS node pool upgrade, as AKS may reconcile the LB configuration and reset the probe back to HTTP.
+
 ---
 
 ## CI/CD Pipeline
