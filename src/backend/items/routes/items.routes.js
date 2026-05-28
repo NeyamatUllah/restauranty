@@ -30,8 +30,11 @@ router.get("/:id", (req, res) => {
 
 router.post("/", fileUploader.single("imagem"), (req, res) => {
 
-    const item = req.body
+    if (!req.file) {
+        return res.status(400).json({ message: "Image file is required" });
+    }
 
+    const item = req.body
     const data = req.file.path
 
     Item.create(item)

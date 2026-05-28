@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Coupons = require('../models/coupons.model')
+const { isAuthenticated } = require('../middleware/jwt.middleware')
 
 // const fileUploader = require('./../config/cloudinary.config')
 
@@ -27,7 +28,7 @@ router.get("/:id", (req, res) => {
 
 })
 
-router.post("/", (req, res) => {
+router.post("/", isAuthenticated, (req, res) => {
 
     const coupon = req.body
 
@@ -47,7 +48,7 @@ router.post("/", (req, res) => {
 
 })
 
-router.put("/:id", (req, res) => {
+router.put("/:id", isAuthenticated, (req, res) => {
 
     const coupon = req.body
 
@@ -58,7 +59,7 @@ router.put("/:id", (req, res) => {
     })
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isAuthenticated, (req, res) => {
 
     const id = req.params.id
 

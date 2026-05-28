@@ -14,7 +14,7 @@ const { httpMetricsMiddleware } = require('./metrics.cjs');
 const app = express();
 
 app.use(cors({
-    origin: '*'
+    origin: process.env.ORIGIN || '*'
 }));
 app.use(httpMetricsMiddleware);
 

@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../models/User.model')
+const { isAuthenticated } = require('../middleware/jwt.middleware')
 
 // const fileUploader = require('./../config/cloudinary.config')
 
-router.get("/", (req, res) => {
+router.get("/", isAuthenticated, (req, res) => {
 
     User.find().then(users => {
         res.json(users)
@@ -15,7 +16,7 @@ router.get("/", (req, res) => {
 
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", isAuthenticated, (req, res) => {
 
     const id = req.params.id
 
@@ -27,11 +28,11 @@ router.get("/:id", (req, res) => {
 
 })
 
-router.put("/", (req, res) => {
+router.put("/", isAuthenticated, (req, res) => {
 
     const user = req.body
 
-    user.findByIdAndUpdate(user._id, user, { new: true }).then(newUser => {
+    User.findByIdAndUpdate(user._id, user, { new: true }).then(newUser => {
         res.json(newUser)
     }).catch(err => {
         res.status(400).json(err)
@@ -39,7 +40,7 @@ router.put("/", (req, res) => {
 
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isAuthenticated, (req, res) => {
 
     const id = req.params.id
 
