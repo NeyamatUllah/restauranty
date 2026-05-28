@@ -112,6 +112,19 @@
 
 ---
 
+## Phase 8 — Helm
+
+- [x] Create `infrastructure/helm/` chart (Chart.yaml, values.yaml, templates/)
+- [x] Convert all 21 K8s manifests to parameterised Helm templates
+- [x] Add `_helpers.tpl` with shared label and secret env helpers
+- [x] Wrap monitoring stack in `monitoring.enabled` flag
+- [x] Update CI/CD deploy step from `kubectl apply` to `helm upgrade --install`
+- [x] Allow `workflow_dispatch` to trigger build and deploy jobs
+- [x] Validate: `helm lint` and `helm template` pass with zero errors
+- [x] Test: pipeline green; all 7 pods Running via Helm release on AKS
+
+---
+
 ## Progress Summary
 
 | Phase | Status | Notes |
@@ -124,3 +137,4 @@
 | 5 — Security | **done** | SECURITY.md written; network policies in place; no .env in git |
 | 6 — Documentation | **done** | README.md written covering all phases |
 | 7 — AKS Deploy | **done** | Live on AKS (West Europe); all 7 pods running; monitoring URLs public |
+| 8 — Helm | **done** | Full Helm chart in infrastructure/helm/; CI/CD uses helm upgrade --install; pipeline green |
