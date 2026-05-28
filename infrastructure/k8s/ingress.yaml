@@ -5,7 +5,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - http:
+    - host: restauranty.40.114.182.90.nip.io
+      http:
         paths:
           - path: /api/auth
             pathType: Prefix
