@@ -95,6 +95,7 @@ jobs:
       - name: Create / update K8s secrets
         run: |
           kubectl create secret generic restauranty-secrets \
+            --namespace restauranty \
             --from-literal=MONGODB_URI="${{ secrets.MONGODB_URI }}" \
             --from-literal=SECRET="${{ secrets.SECRET }}" \
             --from-literal=ORIGIN="${{ secrets.ORIGIN }}" \
@@ -104,4 +105,4 @@ jobs:
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Apply Kubernetes manifests
-        run: kubectl apply -f infrastructure/k8s/
+        run: kubectl apply -f infrastructure/k8s/ --namespace restauranty
