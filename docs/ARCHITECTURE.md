@@ -30,7 +30,8 @@
 | Media Storage | Cloudinary |
 | Local Routing | HAProxy |
 | Containers | Docker |
-| Orchestration | Kubernetes (Minikube / EKS / AKS) |
+| Orchestration | Kubernetes (Minikube / AKS) |
+| Package Manager | Helm |
 | Ingress | NGINX Ingress Controller |
 | CI/CD | GitHub Actions |
 | Monitoring | Prometheus + Grafana |
@@ -216,37 +217,37 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: restauranty.example.com
+    - host: restauranty.40.114.182.90.nip.io
       http:
         paths:
           - path: /api/auth
             pathType: Prefix
             backend:
               service:
-                name: auth-service
+                name: auth
                 port:
                   number: 3001
           - path: /api/discounts
             pathType: Prefix
             backend:
               service:
-                name: discounts-service
+                name: discounts
                 port:
                   number: 3002
           - path: /api/items
             pathType: Prefix
             backend:
               service:
-                name: items-service
+                name: items
                 port:
                   number: 3003
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: frontend-service
+                name: client
                 port:
-                  number: 3000
+                  number: 80
 ```
 
 ---
@@ -309,7 +310,7 @@ services:
 
 ### Manifest Files
 
-Located in `infrastructure/k8s/`:
+Raw manifests are in `infrastructure/k8s/` (used for Minikube / reference). Production deployments use the **Helm chart** at `infrastructure/helm/`.
 
 ```
 infrastructure/k8s/
@@ -324,8 +325,40 @@ infrastructure/k8s/
 ├── mongo-statefulset.yaml
 ├── mongo-service.yaml
 ├── ingress.yaml
-├── secrets.yaml          ← never commit actual values
-└── network-policies.yaml
+├── monitoring-ingress.yaml
+├── secrets.yaml.example  ← never commit actual values
+├── network-policies.yaml
+├── prometheus-configmap.yaml
+├── prometheus-deployment.yaml
+├── prometheus-service.yaml
+├── grafana-configmaps.yaml
+├── grafana-deployment.yaml
+└── grafana-service.yaml
+```
+
+### Helm Chart
+
+The Helm chart at `infrastructure/helm/` packages all manifests with configurable values:
+
+```
+infrastructure/helm/
+├── Chart.yaml
+├── values.yaml           ← image tag, replicas, ingress host, monitoring toggle
+└── templates/
+    ├── _helpers.tpl
+    ├── *-deployment.yaml
+    ├── *-service.yaml
+    ├── ingress.yaml
+    ├── monitoring-ingress.yaml
+    ├── network-policies.yaml
+    └── grafana/prometheus configmaps
+```
+
+Deploy or upgrade with a single command:
+
+```bash
+helm upgrade --install restauranty infrastructure/helm \
+  --namespace restauranty --create-namespace --wait
 ```
 
 ### Deployment Pattern (per microservice)
@@ -394,15 +427,16 @@ Trigger: push to main / pull_request
     │   └── restauranty-client:$SHA
     │
     └── Deploy to Kubernetes
-        └── kubectl apply -f infrastructure/k8s/
+        └── helm upgrade --install restauranty infrastructure/helm \
+              --namespace restauranty --create-namespace --wait
 ```
 
 ### Secrets in GitHub Actions
 
 Store these in GitHub → Settings → Secrets:
-- `DOCKER_USERNAME` / `DOCKER_PASSWORD`
-- `KUBE_CONFIG` (base64-encoded kubeconfig)
-- `MONGODB_URI`, `SECRET`, `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET`
+- `KUBE_CONFIG` (base64-encoded AKS kubeconfig)
+- `MONGODB_URI`, `SECRET`, `ORIGIN`
+- `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET`
 
 ---
 
@@ -531,20 +565,19 @@ final-project-restauranty/
 ├── docker-compose.yaml         # Full local stack
 │
 ├── infrastructure/
-│   ├── k8s/
-│   │   ├── auth-deployment.yaml
-│   │   ├── auth-service.yaml
-│   │   ├── discounts-deployment.yaml
-│   │   ├── discounts-service.yaml
-│   │   ├── items-deployment.yaml
-│   │   ├── items-service.yaml
-│   │   ├── frontend-deployment.yaml
-│   │   ├── frontend-service.yaml
-│   │   ├── mongo-statefulset.yaml
-│   │   ├── mongo-service.yaml
+│   ├── k8s/                        # raw manifests (Minikube / reference)
+│   │   ├── *-deployment.yaml
+│   │   ├── *-service.yaml
 │   │   ├── ingress.yaml
+│   │   ├── monitoring-ingress.yaml
+│   │   ├── grafana-configmaps.yaml
+│   │   ├── network-policies.yaml
 │   │   ├── secrets.yaml.example
-│   │   └── network-policies.yaml
+│   │   └── prometheus-configmap.yaml
+│   ├── helm/                       # Helm chart (production deploys)
+│   │   ├── Chart.yaml
+│   │   ├── values.yaml
+│   │   └── templates/
 │   └── monitoring/
 │       ├── prometheus.yaml
 │       └── grafana-dashboard.json
@@ -554,7 +587,10 @@ final-project-restauranty/
 │       └── ci-cd.yaml
 │
 ├── docs/
-│   └── ARCHITECTURE.md         ← this document
+│   ├── ARCHITECTURE.md         ← this document
+│   ├── TODO.md
+│   ├── SECRETS.md
+│   └── PRESENTATION.md
 │
 ├── SECURITY.md
 └── README.md
@@ -609,5 +645,5 @@ Open `http://localhost:80` — HAProxy routes everything.
 
 ---
 
-*Document version: 1.0 — May 2026*
-*Author: Cloud Architecture review for IronHack Week 9 Restauranty project*
+*Document version: 2.0 — May 2026*
+*Author: Neyamat Ullah — IronHack Week 9 DevOps Capstone*
