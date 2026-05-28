@@ -189,8 +189,12 @@ Required secrets: see [docs/SECRETS.md](docs/SECRETS.md)
 
 ## Monitoring
 
-- **Prometheus** — scrapes `/metrics` from all 3 services every 15s → `http://localhost:9090`
-- **Grafana** — dashboard auto-provisions on start, no manual setup needed → `http://localhost:3030`
+| Service | Local (Docker Compose) | AKS |
+|---|---|---|
+| Prometheus | http://localhost:9090 | http://prometheus.40.114.182.90.nip.io |
+| Grafana | http://localhost:3030 (admin / admin) | http://grafana.40.114.182.90.nip.io (admin / admin) |
+
+Prometheus scrapes `/metrics` from all 3 services every 15s. The Grafana **Restauranty** dashboard auto-provisions on startup — no manual setup needed.
 
 Metrics available: HTTP request rate, error rate, total users, requests by route.
 
