@@ -140,7 +140,14 @@ kubectl get ingress
 
 The app is deployed to AKS in West Europe in a dedicated `restauranty` namespace, isolated from other workloads on the shared cluster.
 
-**Live URL: http://restauranty.40.114.182.90.nip.io**
+**Live URLs:**
+
+| Endpoint | URL |
+|---|---|
+| App | http://restauranty.40.114.182.90.nip.io |
+| Auth API | http://restauranty.40.114.182.90.nip.io/api/auth/ |
+| Discounts API | http://restauranty.40.114.182.90.nip.io/api/discounts/ |
+| Items API | http://restauranty.40.114.182.90.nip.io/api/items/ |
 
 To redeploy manually (requires Azure CLI and `kubectl` configured):
 
