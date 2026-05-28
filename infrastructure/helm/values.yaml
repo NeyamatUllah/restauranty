@@ -1,0 +1,28 @@
+image:
+  owner: neyamatullah
+  tag: latest
+  pullPolicy: Always
+
+replicas:
+  auth: 1
+  discounts: 1
+  items: 1
+  client: 1
+
+ingress:
+  className: nginx
+  host: restauranty.40.114.182.90.nip.io
+  ip: 40.114.182.90
+
+secrets:
+  name: restauranty-secrets
+
+mongo:
+  storage: 1Gi
+
+monitoring:
+  enabled: true
+  grafana:
+    adminPassword: admin
+  prometheus:
+    scrapeInterval: 15s

@@ -1,0 +1,110 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  labels:
+    {{- include "restauranty.labels" . | nindent 4 }}
+data:
+  prometheus.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus:9090
+        isDefault: true
+        access: proxy
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-provider
+  labels:
+    {{- include "restauranty.labels" . | nindent 4 }}
+data:
+  dashboard.yaml: |
+    apiVersion: 1
+    providers:
+      - name: Restauranty
+        type: file
+        options:
+          path: /var/lib/grafana/dashboards
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-json
+  labels:
+    {{- include "restauranty.labels" . | nindent 4 }}
+data:
+  restauranty.json: |
+    {
+      "title": "Restauranty",
+      "uid": "restauranty",
+      "schemaVersion": 36,
+      "version": 1,
+      "refresh": "10s",
+      "panels": [
+        {
+          "id": 1,
+          "title": "HTTP Request Rate (per second)",
+          "type": "timeseries",
+          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+          "targets": [
+            {
+              "expr": "rate(http_requests_overall_total[1m])",
+              "legendFormat": "{{`{{job}}`}}",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "HTTP Error Rate (4xx + 5xx)",
+          "type": "timeseries",
+          "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+          "targets": [
+            {
+              "expr": "rate(http_requests_total{statusCode=~\"4..|5..\"}[1m])",
+              "legendFormat": "{{`{{job}} {{statusCode}}`}}",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "title": "Total Users",
+          "type": "stat",
+          "gridPos": { "x": 0, "y": 8, "w": 6, "h": 4 },
+          "targets": [
+            {
+              "expr": "users_total",
+              "legendFormat": "Users",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "title": "HTTP Requests by Route",
+          "type": "timeseries",
+          "gridPos": { "x": 6, "y": 8, "w": 18, "h": 8 },
+          "targets": [
+            {
+              "expr": "rate(http_requests_total[1m])",
+              "legendFormat": "{{`{{method}} {{route}} {{statusCode}}`}}",
+              "refId": "A"
+            }
+          ]
+        }
+      ],
+      "datasources": [
+        {
+          "name": "Prometheus",
+          "type": "prometheus",
+          "url": "http://prometheus:9090",
+          "isDefault": true
+        }
+      ]
+    }
+{{- end }}

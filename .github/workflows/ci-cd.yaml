@@ -104,5 +104,9 @@ jobs:
             --from-literal=CLOUD_API_SECRET="${{ secrets.CLOUD_API_SECRET }}" \
             --dry-run=client -o yaml | kubectl apply -f -
 
-      - name: Apply Kubernetes manifests
-        run: kubectl apply -f infrastructure/k8s/ --namespace restauranty
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install restauranty infrastructure/helm \
+            --namespace restauranty \
+            --create-namespace \
+            --wait

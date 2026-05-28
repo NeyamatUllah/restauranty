@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discounts
+  labels:
+    {{- include "restauranty.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas.discounts }}
+  selector:
+    matchLabels:
+      app: discounts
+  template:
+    metadata:
+      labels:
+        app: discounts
+    spec:
+      containers:
+        - name: discounts
+          image: ghcr.io/{{ .Values.image.owner }}/restauranty-discounts:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3002
+          env:
+            - name: PORT
+              value: "3002"
+            {{- include "restauranty.secretEnv" . | nindent 12 }}

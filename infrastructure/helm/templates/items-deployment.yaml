@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: items
+  labels:
+    {{- include "restauranty.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas.items }}
+  selector:
+    matchLabels:
+      app: items
+  template:
+    metadata:
+      labels:
+        app: items
+    spec:
+      containers:
+        - name: items
+          image: ghcr.io/{{ .Values.image.owner }}/restauranty-items:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3003
+          env:
+            - name: PORT
+              value: "3003"
+            {{- include "restauranty.secretEnv" . | nindent 12 }}
