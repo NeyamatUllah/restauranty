@@ -52,7 +52,8 @@ A restaurant management platform built with a **microservices architecture**: 3 
 | Routing (local) | HAProxy |
 | Routing (K8s) | NGINX Ingress |
 | Containerization | Docker, Docker Compose |
-| Orchestration | Kubernetes |
+| Orchestration | Kubernetes (Minikube / AKS) |
+| Cloud | Azure Kubernetes Service (West Europe) |
 | CI/CD | GitHub Actions, ghcr.io |
 
 ---
@@ -114,6 +115,8 @@ haproxy -f src/haproxy.cfg
 
 ## Kubernetes Deployment
 
+### Local — Minikube
+
 ```bash
 # 1. Start Minikube
 minikube start
@@ -133,6 +136,41 @@ kubectl get pods
 kubectl get ingress
 ```
 
+### Cloud — Azure Kubernetes Service (AKS)
+
+The app is deployed to AKS in West Europe in a dedicated `restauranty` namespace, isolated from other workloads on the shared cluster.
+
+**Live URL: http://restauranty.40.114.182.90.nip.io**
+
+To redeploy manually (requires Azure CLI and `kubectl` configured):
+
+```bash
+# Get cluster credentials
+az aks get-credentials \
+  --resource-group rg-3tier-aks-neyamat \
+  --name aks-3tier-neyamat
+
+# Create/update secrets
+kubectl create secret generic restauranty-secrets \
+  --namespace restauranty \
+  --from-literal=MONGODB_URI="<uri>" \
+  --from-literal=SECRET="<jwt-secret>" \
+  --from-literal=ORIGIN="http://restauranty.40.114.182.90.nip.io" \
+  --from-literal=CLOUD_NAME="<cloudinary-name>" \
+  --from-literal=CLOUD_API_KEY="<key>" \
+  --from-literal=CLOUD_API_SECRET="<secret>" \
+  --dry-run=client -o yaml | kubectl apply -f -
+
+# Deploy
+kubectl apply -f infrastructure/k8s/ --namespace restauranty
+
+# Verify
+kubectl get pods -n restauranty
+kubectl get ingress -n restauranty
+```
+
+> The ingress uses host-based routing (`restauranty.40.114.182.90.nip.io`) so it coexists with other apps on the shared NGINX Ingress controller without path conflicts.
+
 ---
 
 ## CI/CD Pipeline
@@ -143,7 +181,7 @@ GitHub Actions (`.github/workflows/ci-cd.yaml`) runs on every push to `main` (sk
 |---|---|---|
 | Build & Test | push + PR | `npm ci` for auth, discounts, items |
 | Build & Push | merge to main | Builds & pushes Docker images to ghcr.io |
-| Deploy | after build | `kubectl apply` to Kubernetes cluster |
+| Deploy | after build | `kubectl apply` to AKS (`restauranty` namespace) |
 
 Required secrets: see [docs/SECRETS.md](docs/SECRETS.md)
 
