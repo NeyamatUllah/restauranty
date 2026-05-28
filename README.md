@@ -168,15 +168,50 @@ kubectl create secret generic restauranty-secrets \
   --from-literal=CLOUD_API_SECRET="<secret>" \
   --dry-run=client -o yaml | kubectl apply -f -
 
-# Deploy
-kubectl apply -f infrastructure/k8s/ --namespace restauranty
+# Deploy with Helm
+helm upgrade --install restauranty infrastructure/helm \
+  --namespace restauranty \
+  --create-namespace \
+  --wait
 
 # Verify
 kubectl get pods -n restauranty
-kubectl get ingress -n restauranty
+helm list -n restauranty
 ```
 
 > The ingress uses host-based routing (`restauranty.40.114.182.90.nip.io`) so it coexists with other apps on the shared NGINX Ingress controller without path conflicts.
+
+### Helm Chart
+
+The Kubernetes deployment is managed via a Helm chart at `infrastructure/helm/`.
+
+| Command | Description |
+|---|---|
+| `helm upgrade --install restauranty infrastructure/helm -n restauranty --create-namespace` | Install or upgrade the release |
+| `helm list -n restauranty` | Show the current release status |
+| `helm rollback restauranty -n restauranty` | Roll back to the previous release |
+| `helm uninstall restauranty -n restauranty` | Remove all chart resources |
+
+Key values in `infrastructure/helm/values.yaml`:
+
+| Value | Default | Description |
+|---|---|---|
+| `image.owner` | `neyamatullah` | GitHub Container Registry owner |
+| `image.tag` | `latest` | Docker image tag |
+| `replicas.*` | `1` | Replicas per service |
+| `ingress.host` | `restauranty.40.114.182.90.nip.io` | Public hostname |
+| `ingress.ip` | `40.114.182.90` | LB IP for monitoring ingress |
+| `monitoring.enabled` | `true` | Toggle Prometheus + Grafana |
+| `mongo.storage` | `1Gi` | MongoDB PVC size |
+
+To override values at deploy time:
+
+```bash
+helm upgrade --install restauranty infrastructure/helm \
+  --namespace restauranty \
+  --set image.tag=v1.2.0 \
+  --set replicas.auth=2
+```
 
 #### Azure LB health probe
 
