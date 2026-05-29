@@ -3,7 +3,7 @@ import axios from 'axios';
 class ExampleService {
   constructor() {
     this.api = axios.create({
-      baseURL: process.env.REACT_APP_SERVER_URL || "http://149.100.138.125:6001"
+      baseURL: process.env.REACT_APP_SERVER_URL || ""
     });
 
     // Automatically set JWT token in the headers for every request
