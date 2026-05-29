@@ -110,3 +110,10 @@ jobs:
             --namespace restauranty \
             --create-namespace \
             --wait
+
+      - name: Restart deployments to pull latest images
+        run: |
+          kubectl rollout restart deployment/auth deployment/discounts deployment/items deployment/client \
+            --namespace restauranty
+          kubectl rollout status deployment/auth deployment/discounts deployment/items deployment/client \
+            --namespace restauranty --timeout=120s
