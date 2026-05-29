@@ -11,6 +11,8 @@ import IsPrivate from "./components/IsPrivate/IsPrivate";
 import IsAdmin from "./components/IsAdmin/IsAdmin";
 import IsAnon from "./components/IsAnon/IsAnon";
 
+import UsersPageList from "./pages/Admin/Users/UsersPageList/UsersPageList";
+
 import CreateItem from "./pages/Admin/Items/CreateItem/CreateItem";
 import EditItem from "./pages/Admin/Items/EditItem/EditItem";
 import ItemsPageList from "./pages/Admin/Items/ItemsPageList/ItemsPageList";
@@ -48,6 +50,14 @@ function App() {
               <IsPrivate>
                 <ProfilePage />
               </IsPrivate>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <IsAdmin>
+                <UsersPageList />
+              </IsAdmin>
             }
           />
           <Route
