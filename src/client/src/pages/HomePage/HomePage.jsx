@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/auth.context";
 import { BiListUl, BiSolidDiscount } from "react-icons/bi";
 import { MdCampaign } from "react-icons/md";
 import { BiSolidCategoryAlt } from "react-icons/bi";
+import { FaUsers } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 function HomePage() {
@@ -13,6 +14,7 @@ function HomePage() {
     { title: "Coupons", description: "Create and manage discount codes", icon: <BiSolidDiscount className="text-3xl text-primary-600" />, link: "/discounts/coupons" },
     { title: "Campaigns", description: "Run marketing campaigns", icon: <MdCampaign className="text-3xl text-primary-600" />, link: "/discounts/campaigns" },
     { title: "Categories", description: "Organize your menu categories", icon: <BiSolidCategoryAlt className="text-3xl text-primary-600" />, link: "/dietary" },
+    { title: "Users", description: "Manage user roles and access", icon: <FaUsers className="text-3xl text-primary-600" />, link: "/users" },
   ];
 
   return (
@@ -24,7 +26,7 @@ function HomePage() {
         <p className="text-gray-500 mt-2">Welcome to your restaurant management dashboard.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {cards.map((card) => (
           <Link key={card.title} to={card.link}>
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-primary-200 transition-all duration-300 cursor-pointer group">

@@ -33,8 +33,18 @@ class AuthService {
 
   verify = () => {
     return this.api.get("/api/auth/verify");
-    // same as
-    // return axios.post("http://149.100.138.125:6001/auth/verify");
+  };
+
+  getUsers = () => {
+    return this.api.get("/api/auth/users");
+  };
+
+  updateUser = (user) => {
+    return this.api.put("/api/auth/users", user);
+  };
+
+  deleteUser = (id) => {
+    return this.api.delete(`/api/auth/users/${id}`);
   };
 }
 
