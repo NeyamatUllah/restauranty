@@ -4,16 +4,18 @@ import { Navigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 
 function IsPrivate({ children }) {
-  const { isAdmin, isLoading } = useContext(AuthContext);
+  const { isLoggedIn, isAdmin, isLoading } = useContext(AuthContext);
 
-  // If the authentication is still loading ⏳
   if (isLoading) {
     return <Loading />;
   }
 
-  if (!isAdmin) {
-    // If the user is not logged in navigate to the login page ❌
+  if (!isLoggedIn) {
     return <Navigate to="/login" />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/" />;
   }
   // If the user is logged in, allow to see the page ✅
   return children;
