@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/auth.context";
 import { BiLogOut, BiListPlus, BiListUl, BiSolidDiscount, BiSolidCategoryAlt } from 'react-icons/bi';
 import { MdCampaign } from 'react-icons/md'
 import { BsFillPersonFill } from 'react-icons/bs'
+import { FaUsers } from 'react-icons/fa6'
 
 function Navbar() {
   const { isLoggedIn, user, logOutUser, isAdmin } = useContext(AuthContext);
@@ -74,6 +75,15 @@ function Navbar() {
                 </Link>
                 <Link to="/createdietary">
                   <button className={menuItemClass('/createdietary')}><BiListPlus className="icons" />Create Category</button>
+                </Link>
+              </div>
+            )}
+
+            {isAdmin && (
+              <div className="mb-2">
+                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest pl-8 mb-2 mt-4">Users</p>
+                <Link to="/users">
+                  <button className={menuItemClass('/users')}><FaUsers className="icons" />Manage Users</button>
                 </Link>
               </div>
             )}
